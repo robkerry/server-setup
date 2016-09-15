@@ -77,7 +77,7 @@ adduser ${USERNAME} sudo
 mkdir -p /home/${USERNAME}/.ssh
 echo ${SSHPUBKEY} > /home/${USERNAME}/.ssh/authorized_keys
 chown -Rf ${USERNAME}:${USERNAME} /home/${USERNAME}
-wget "https://gist.githubusercontent.com/robkerry/267ac8f988169c5e434c97ba2b959421/raw/b88c5bdca63e92abcd2c9c7acde18d11fe7ff5fa/sshd_config" -O sshd_config
+wget "https://raw.githubusercontent.com/robkerry/server-setup/master/config/sshd_config" -O sshd_config
 mv -f /etc/ssh/sshd_config /etc/ssh/sshd_config.old
 mv -f sshd_config /etc/ssh/sshd_config
 
