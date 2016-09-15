@@ -71,9 +71,12 @@ resolvconf -u
 rm -Rf /etc/localtime;ln -fs /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 rm -Rf /etc/timezone;ln -fs /usr/share/zoneinfo/${TIMEZONE} /etc/timezone
 apt-get install -y ntp
-ntpdate -s ntp.ubuntu.com;
+service ntp stop
+ntpd -gq
+service ntp start
 
 ### Configure SSH ###
+adduser ${USERNAME}
 adduser ${USERNAME} sudo
 mkdir -p /home/${USERNAME}/.ssh
 echo ${SSHPUBKEY} > /home/${USERNAME}/.ssh/authorized_keys
