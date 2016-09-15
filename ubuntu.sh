@@ -11,11 +11,6 @@ TIMEZONE="America/New_York"
 
 ###############   ALL DONE!   ###############
 
-IPADDRESS=`dig -4 @resolver1.opendns.com -t a myip.opendns.com +short`
-IFS='.' read -r -a array1 <<< ${HOSTNAME}; SHORTNAME=${array1[0]};
-BASH_USERNAME=${USER}
-CLIENTIP=`echo $SSH_CLIENT | awk '{ print $1}'`
-
 echo -e "\nPlease enter a hostname for the server to begin."
 read -p 'Hostname: ' hostvar
 HOSTNAME=$hostvar
@@ -29,14 +24,6 @@ read -p 'SSH Public Key: ' sshvar
 SSHPUBKEY=$sshvar
 
 echo "Starting setup script..."
-echo IPADDRESS = ${IPADDRESS}
-echo HOSTNAME = ${HOSTNAME}
-
-## Fix the hostname ##
-
-hostname $HOSTNAME
-echo ${HOSTNAME} > /etc/hostname
-echo -e "127.0.0.1\tlocalhost ${HOSTNAME} ${SHORTNAME}\n${IPADDRESS}\t${HOSTNAME} ${SHORTNAME}\n\n" > /etc/hosts
 
 ### Run Software Updates First ###
 apt-get install -y ca-certificates
@@ -46,8 +33,10 @@ apt-get -y upgrade
 ### Install Required Software ###
 apt-get remove -y memcached
 apt-get remove -y unbound
-apt-get install -y dnsmasq
 apt-get install -y build-essential
+apt-get install -y dnsutils
+apt-get install -y dnsmasq
+apt-get install -y nano
 apt-get install -y git
 apt-get install -y python-pip
 apt-get install -y gcc
@@ -57,6 +46,18 @@ apt-get install -y libtool
 apt-get install -y python-dev
 apt-get install -y make
 apt-get install -y g++
+apt-get install -y ufw
+
+IPADDRESS=`dig -4 @resolver1.opendns.com -t a myip.opendns.com +short`
+IFS='.' read -r -a array1 <<< ${HOSTNAME}; SHORTNAME=${array1[0]};
+BASH_USERNAME=${USER}
+CLIENTIP=`echo $SSH_CLIENT | awk '{ print $1}'`
+
+## Fix the hostname ##
+
+hostname $HOSTNAME
+echo ${HOSTNAME} > /etc/hostname
+echo -e "127.0.0.1\tlocalhost ${HOSTNAME} ${SHORTNAME}\n${IPADDRESS}\t${HOSTNAME} ${SHORTNAME}\n\n" > /etc/hosts
 
 ### Add Google DNS Resolvers ###
 rm -Rf /etc/resolvconf/resolv.conf.d/*
