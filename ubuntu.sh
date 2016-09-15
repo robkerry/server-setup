@@ -35,7 +35,7 @@ apt-get remove -y memcached
 apt-get remove -y unbound
 apt-get install -y build-essential
 apt-get install -y dnsutils
-apt-get install -y dnsmasq
+apt-get install -y nscd
 apt-get install -y nano
 apt-get install -y git
 apt-get install -y python-pip
