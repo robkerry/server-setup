@@ -31,8 +31,6 @@ apt-get -y update
 apt-get -y upgrade
 
 ### Install Required Software ###
-apt-get remove -y memcached
-apt-get remove -y unbound
 apt-get install -y build-essential
 apt-get install -y dnsutils
 apt-get install -y software-properties-common
