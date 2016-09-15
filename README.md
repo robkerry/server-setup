@@ -1,2 +1,7 @@
-# server-setup
-Scripts to manage servers
+# Server Setup Scripts
+
+This repo contains useful scripts written in Bash/Shell for securing and configuring servers.
+
+## Basic Ubuntu Server Setup
+Run the following command on the server:
+`su;cd;wget 'https://raw.githubusercontent.com/robkerry/server-setup/master/ubuntu.sh';chmod +x ubuntu.sh;./ubuntu.sh;`
