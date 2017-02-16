@@ -46,6 +46,7 @@ apt-get install -y python-dev
 apt-get install -y make
 apt-get install -y g++
 apt-get install -y ufw
+apt-get install -y fail2ban
 
 IPADDRESS=`dig -4 @resolver1.opendns.com -t a myip.opendns.com +short`
 IFS='.' read -r -a array1 <<< ${HOSTNAME}; SHORTNAME=${array1[0]};
