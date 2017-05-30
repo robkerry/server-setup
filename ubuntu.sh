@@ -26,27 +26,27 @@ SSHPUBKEY=$sshvar
 echo "Starting setup script..."
 
 ### Run Software Updates First ###
-apt-get install -y ca-certificates
-apt-get -y update
-apt-get -y upgrade
+sudo apt-get install -y ca-certificates
+sudo apt-get -y update
+sudo apt-get -y upgrade
 
 ### Install Required Software ###
-apt-get install -y build-essential
-apt-get install -y dnsutils
-apt-get install -y software-properties-common
-apt-get install -y nscd
-apt-get install -y nano
-apt-get install -y git
-apt-get install -y python-pip
-apt-get install -y gcc
-apt-get install -y autoconf
-apt-get install -y curl
-apt-get install -y libtool
-apt-get install -y python-dev
-apt-get install -y make
-apt-get install -y g++
-apt-get install -y ufw
-apt-get install -y fail2ban
+sudo apt-get install -y build-essential
+sudo apt-get install -y dnsutils
+sudo apt-get install -y software-properties-common
+sudo apt-get install -y nscd
+sudo apt-get install -y nano
+sudo apt-get install -y git
+sudo apt-get install -y python-pip
+sudo apt-get install -y gcc
+sudo apt-get install -y autoconf
+sudo apt-get install -y curl
+sudo apt-get install -y libtool
+sudo apt-get install -y python-dev
+sudo apt-get install -y make
+sudo apt-get install -y g++
+sudo apt-get install -y ufw
+sudo apt-get install -y fail2ban
 
 IPADDRESS=`dig -4 @resolver1.opendns.com -t a myip.opendns.com +short`
 IFS='.' read -r -a array1 <<< ${HOSTNAME}; SHORTNAME=${array1[0]};
@@ -56,46 +56,46 @@ CLIENTIP=`echo $SSH_CLIENT | awk '{ print $1}'`
 ## Fix the hostname ##
 
 hostname $HOSTNAME
-echo ${HOSTNAME} > /etc/hostname
-echo -e "127.0.0.1\tlocalhost ${HOSTNAME} ${SHORTNAME}\n${IPADDRESS}\t${HOSTNAME} ${SHORTNAME}\n\n" > /etc/hosts
+sudo echo ${HOSTNAME} > /etc/hostname
+sudo echo -e "127.0.0.1\tlocalhost ${HOSTNAME} ${SHORTNAME}\n${IPADDRESS}\t${HOSTNAME} ${SHORTNAME}\n\n" > /etc/hosts
 
 ### Add Google DNS Resolvers ###
-rm -Rf /etc/resolvconf/resolv.conf.d/*
-touch /etc/resolvconf/resolv.conf.d/base
-touch /etc/resolvconf/resolv.conf.d/head
-touch /etc/resolvconf/resolv.conf.d/original
-echo -e "nameserver 127.0.0.1\nnameserver 8.8.8.8\nnameserver 8.8.4.4\noptions timeout 1\n" > /etc/resolvconf/resolv.conf.d/tail
+sudo rm -Rf /etc/resolvconf/resolv.conf.d/*
+sudo touch /etc/resolvconf/resolv.conf.d/base
+sudo touch /etc/resolvconf/resolv.conf.d/head
+sudo touch /etc/resolvconf/resolv.conf.d/original
+sudo echo -e "nameserver 127.0.0.1\nnameserver 8.8.8.8\nnameserver 8.8.4.4\noptions timeout 1\n" > /etc/resolvconf/resolv.conf.d/tail
 resolvconf -u
 
 ### Configure Time Server & Timezone ###
-rm -Rf /etc/localtime;ln -fs /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
-rm -Rf /etc/timezone;ln -fs /usr/share/zoneinfo/${TIMEZONE} /etc/timezone
-apt-get install -y ntp
-service ntp stop
-ntpd -gq
-service ntp start
+sudo rm -Rf /etc/localtime;ln -fs /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
+sudo rm -Rf /etc/timezone;ln -fs /usr/share/zoneinfo/${TIMEZONE} /etc/timezone
+sudo apt-get install -y ntp
+sudo service ntp stop
+sudo ntpd -gq
+sudo service ntp start
 
 ### Configure SSH ###
-adduser ${USERNAME}
-adduser ${USERNAME} sudo
-mkdir -p /home/${USERNAME}/.ssh
-echo ${SSHPUBKEY} > /home/${USERNAME}/.ssh/authorized_keys
-chown -Rf ${USERNAME}:${USERNAME} /home/${USERNAME}
-wget "https://raw.githubusercontent.com/robkerry/server-setup/master/config/sshd_config" -O sshd_config
-mv -f /etc/ssh/sshd_config /etc/ssh/sshd_config.old
-mv -f sshd_config /etc/ssh/sshd_config
+sudo adduser ${USERNAME}
+sudo adduser ${USERNAME} sudo
+sudo mkdir -p /home/${USERNAME}/.ssh
+sudo echo ${SSHPUBKEY} > /home/${USERNAME}/.ssh/authorized_keys
+sudo chown -Rf ${USERNAME}:${USERNAME} /home/${USERNAME}
+sudo wget "https://raw.githubusercontent.com/robkerry/server-setup/master/config/sshd_config" -O sshd_config
+sudo mv -f /etc/ssh/sshd_config /etc/ssh/sshd_config.old
+sudo mv -f sshd_config /etc/ssh/sshd_config
 
 ### Configure Firewall ###
 
-ufw default deny incoming
-ufw default allow outgoing
-ufw allow 22123/tcp
-ufw allow 80/tcp
-ufw allow 443/tcp
-ufw allow from ${CLIENTIP}
-ufw enable
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 22123/tcp
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow from ${CLIENTIP}
+sudo ufw enable
 
-service ufw restart
-service ssh restart
+sudo service ufw restart
+sudo service ssh restart
 
-echo -e "\nInstall Complete!\n\nIn future, SSH into this server using 'ssh ${USERNAME}@${HOSTNAME} -p 22123'"
+sudo echo -e "\nInstall Complete!\n\nIn future, SSH into this server using 'ssh ${USERNAME}@${HOSTNAME} -p 22123'"
