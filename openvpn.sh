@@ -101,7 +101,7 @@ sudo service ufw restart
 sudo service ssh restart
 
 wget "http://swupdate.openvpn.org/as/openvpn-as-2.1.12-Ubuntu16.amd_64.deb"
-sudo dpkg -i dpkg -i openvpn*
+sudo dpkg -i openvpn*
 sudo passwd openvpn
 sudo bash /usr/local/openvpn_as/bin/ovpn-init
 
