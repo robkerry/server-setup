@@ -9,4 +9,4 @@ Run the following command on the server as 'root':
 
 OR
 
-`cd;rm ubuntu.sh;wget 'https://raw.githubusercontent.com/robkerry/server-setup/master/openvpn.sh';chmod +x openvpn.sh;./openvpn.sh;rm openvpn.sh;`
+`cd;rm openvpn.sh;wget 'https://raw.githubusercontent.com/robkerry/server-setup/master/openvpn.sh';chmod +x openvpn.sh;./openvpn.sh;rm openvpn.sh;`
