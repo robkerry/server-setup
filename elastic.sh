@@ -98,6 +98,18 @@ sudo wget "https://raw.githubusercontent.com/robkerry/server-setup/master/config
 sudo mv -f /etc/ssh/sshd_config /etc/ssh/sshd_config.old
 sudo mv -f sshd_config /etc/ssh/sshd_config
 
+### Configure Elastic Search ###
+sudo add-apt-repository -y ppa:webupd8team/java
+sudo apt-get -y install oracle-java8-installer
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+sudo apt-get install apt-transport-https
+echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-6.x.list
+sudo apt-get -y update
+sudo apt-get -y install elasticsearch
+sudo /bin/systemctl daemon-reload
+sudo /bin/systemctl enable elasticsearch.service
+sudo systemctl start elasticsearch.service
+
 ### Configure Firewall ###
 
 sudo ufw default deny incoming
