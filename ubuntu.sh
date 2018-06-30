@@ -7,7 +7,7 @@
 
 #########   CHANGE THESE SETTINGS   #########
 
-TIMEZONE="America/New_York"
+TIMEZONE="Europe/London"
 
 ###############   ALL DONE!   ###############
 
