@@ -9,4 +9,8 @@ Run the following command on the server as 'root':
 
 OR
 
+`cd;rm cratedb.sh;wget 'https://raw.githubusercontent.com/robkerry/server-setup/master/cratedb.sh';chmod +x cratedb.sh;./cratedb.sh;rm cratedb.sh;`
+
+OR
+
 `cd;rm openvpn.sh;wget 'https://raw.githubusercontent.com/robkerry/server-setup/master/openvpn.sh';chmod +x openvpn.sh;./openvpn.sh;rm openvpn.sh;`
