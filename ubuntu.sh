@@ -26,27 +26,27 @@ SSHPUBKEY=$sshvar
 echo "Starting setup script..."
 
 ### Run Software Updates First ###
-sudo apt-get install -y ca-certificates
-sudo apt-get -y update
-sudo apt-get -y upgrade
+sudo apt install -y ca-certificates
+sudo apt -y update
+sudo apt -y upgrade
 
 ### Install Required Software ###
-sudo apt-get install -y build-essential
-sudo apt-get install -y dnsutils
-sudo apt-get install -y software-properties-common
-sudo apt-get install -y nscd
-sudo apt-get install -y nano
-sudo apt-get install -y git
-sudo apt-get install -y python-pip
-sudo apt-get install -y gcc
-sudo apt-get install -y autoconf
-sudo apt-get install -y curl
-sudo apt-get install -y libtool
-sudo apt-get install -y python-dev
-sudo apt-get install -y make
-sudo apt-get install -y g++
-sudo apt-get install -y ufw
-sudo apt-get install -y fail2ban
+sudo apt install -y build-essential
+sudo apt install -y dnsutils
+sudo apt install -y software-properties-common
+sudo apt install -y nscd
+sudo apt install -y nano
+sudo apt install -y git
+sudo apt install -y python-pip
+sudo apt install -y gcc
+sudo apt install -y autoconf
+sudo apt install -y curl
+sudo apt install -y libtool
+sudo apt install -y python-dev
+sudo apt install -y make
+sudo apt install -y g++
+sudo apt install -y ufw
+sudo apt install -y fail2ban
 
 IPADDRESS=`dig -4 @resolver1.opendns.com -t a myip.opendns.com +short`
 IFS='.' read -r -a array1 <<< ${HOSTNAME}; SHORTNAME=${array1[0]};
@@ -70,7 +70,7 @@ resolvconf -u
 ### Configure Time Server & Timezone ###
 sudo rm -Rf /etc/localtime;ln -fs /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 sudo rm -Rf /etc/timezone;ln -fs /usr/share/zoneinfo/${TIMEZONE} /etc/timezone
-sudo apt-get install -y ntp
+sudo apt install -y ntp
 sudo service ntp stop
 sudo ntpd -gq
 sudo service ntp start
