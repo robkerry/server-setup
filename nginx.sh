@@ -113,6 +113,16 @@ sudo sed -i "s/;date.timezone.*/date.timezone = Europe\/London/" /etc/php/7.2/cl
 sudo sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php/7.2/fpm/php.ini
 sudo sed -i "s/memory_limit = .*/memory_limit = 512M/" /etc/php/7.2/fpm/php.ini
 sudo sed -i "s/;date.timezone.*/date.timezone = Europe\/London/" /etc/php/7.2/fpm/php.ini
+
+sudo sed -i "s/;opcache.enable=.*/opcache.enable=1/" /etc/php/7.2/fpm/php.ini
+sudo sed -i "s/;opcache.memory_consumption=.*/opcache.memory_consumption=192/" /etc/php/7.2/fpm/php.ini
+sudo sed -i "s/;opcache.interned_strings_buffer=.*/opcache.interned_strings_buffer=16/" /etc/php/7.2/fpm/php.ini
+sudo sed -i "s/;opcache.max_accelerated_files=.*/opcache.max_accelerated_files=10000/" /etc/php/7.2/fpm/php.ini
+sudo sed -i "s/;opcache.revalidate_freq=.*/opcache.revalidate_freq=0/" /etc/php/7.2/fpm/php.ini
+sudo sed -i "s/;opcache.validate_timestamps=.*/opcache.validate_timestamps=0/" /etc/php/7.2/fpm/php.ini
+sudo sed -i "s/;opcache.save_comments=.*/opcache.save_comments=0/" /etc/php/7.2/fpm/php.ini
+sudo sed -i "s/;opcache.fast_shutdown=.*/opcache.fast_shutdown=1/" /etc/php/7.2/fpm/php.ini
+
 sudo chmod 733 /var/lib/php/sessions
 sudo chmod +t /var/lib/php/sessions
 sudo service php7.2-fpm restart
@@ -136,10 +146,12 @@ sudo sed -i "s/pm.min_spare_servers = .*/pm.min_spare_servers = 4/" /etc/php/7.2
 sudo sed -i "s/pm.max_spare_servers = .*/pm.max_spare_servers = 6/" /etc/php/7.2/fpm/pool.d/www.conf
 sudo sed -i "s/;pm.max_requests = .*/pm.max_requests = 1000/" /etc/php/7.2/fpm/pool.d/www.conf
 
-sysctl -w net.core.somaxconn=100000
-sysctl -w net.ipv4.ip_local_port_range="10000 65535"
-sysctl -w net.ipv4.tcp_tw_reuse=1
-echo -e "net.core.somaxconn=100000\nnet.ipv4.ip_local_port_range=10000 65535\nsysctl -w net.ipv4.tcp_tw_reuse=1\n" > /etc/sysctl.d/network-tuning.conf
+sudo sysctl -w net.core.somaxconn=100000
+sudo sysctl -w net.ipv4.ip_local_port_range="10000 65535"
+sudo sysctl -w net.ipv4.tcp_tw_reuse=1
+sudo echo -e "net.core.somaxconn=100000\nnet.ipv4.ip_local_port_range=10000 65535\nsysctl -w net.ipv4.tcp_tw_reuse=1\n" > /etc/sysctl.d/network-tuning.conf
+
+sudo phpdismod xdebug
 
 sudo service php7.2-fpm restart
 sudo service nginx restart
