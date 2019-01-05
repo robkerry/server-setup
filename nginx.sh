@@ -122,6 +122,26 @@ sudo echo -e "<?php echo gethostname(); ?>" > /var/www/html/index.php
 
 sudo wget "https://raw.githubusercontent.com/robkerry/server-setup/master/config/nginx_default" -O nginx_default && sudo mv -f nginx_default /etc/nginx/sites-available/default
 
+echo -e "\n\nNext we'll create a 'website' user, that will be used by NGINX, PHP and when uploading website files...\n\n" && sleep 5
+
+sudo adduser website
+sudo usermod -aG sudo website
+sudo chown -Rf website:website /var/www/html
+sudo sed -i "s/user = .*/user = website/" /etc/php/7.2/fpm/pool.d/www.conf
+sudo sed -i "s/group = .*/group = website/" /etc/php/7.2/fpm/pool.d/www.conf
+
+sudo sed -i "s/pm.max_children = .*/pm.max_children = 10/" /etc/php/7.2/fpm/pool.d/www.conf
+sudo sed -i "s/pm.start_servers = .*/pm.start_servers = 4/" /etc/php/7.2/fpm/pool.d/www.conf
+sudo sed -i "s/pm.min_spare_servers = .*/pm.min_spare_servers = 4/" /etc/php/7.2/fpm/pool.d/www.conf
+sudo sed -i "s/pm.max_spare_servers = .*/pm.max_spare_servers = 6/" /etc/php/7.2/fpm/pool.d/www.conf
+sudo sed -i "s/;pm.max_requests = .*/pm.max_requests = 1000/" /etc/php/7.2/fpm/pool.d/www.conf
+
+sysctl -w net.core.somaxconn=100000
+sysctl -w net.ipv4.ip_local_port_range="10000 65535"
+sysctl -w net.ipv4.tcp_tw_reuse=1
+echo -e "net.core.somaxconn=100000\nnet.ipv4.ip_local_port_range=10000 65535\nsysctl -w net.ipv4.tcp_tw_reuse=1\n" > /etc/sysctl.d/network-tuning.conf
+
+sudo service php7.2-fpm restart
 sudo service nginx restart
 
 ### Configure Firewall ###
