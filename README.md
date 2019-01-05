@@ -9,6 +9,10 @@ Run the following command on the server as 'root':
 
 OR
 
+cd;rm nginx.sh;wget 'https://raw.githubusercontent.com/robkerry/server-setup/master/nginx.sh';chmod +x nginx.sh;./nginx.sh;rm nginx.sh;
+
+OR
+
 `cd;rm cratedb.sh;wget 'https://raw.githubusercontent.com/robkerry/server-setup/master/cratedb.sh';chmod +x cratedb.sh;./cratedb.sh;rm cratedb.sh;`
 
 OR
