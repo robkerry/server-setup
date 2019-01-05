@@ -13,6 +13,11 @@ OR
 
 OR
 
+
+`cd;rm haproxy.sh;wget 'https://raw.githubusercontent.com/robkerry/server-setup/master/haproxy.sh';chmod +x haproxy.sh;./haproxy.sh;rm haproxy.sh;`
+
+OR
+
 `cd;rm cratedb.sh;wget 'https://raw.githubusercontent.com/robkerry/server-setup/master/cratedb.sh';chmod +x cratedb.sh;./cratedb.sh;rm cratedb.sh;`
 
 OR
