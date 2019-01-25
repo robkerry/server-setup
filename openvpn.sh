@@ -7,7 +7,7 @@
 
 #########   CHANGE THESE SETTINGS   #########
 
-TIMEZONE="America/New_York"
+TIMEZONE="Europe/London"
 
 ###############   ALL DONE!   ###############
 
@@ -47,6 +47,7 @@ sudo apt-get install -y make
 sudo apt-get install -y g++
 sudo apt-get install -y ufw
 sudo apt-get install -y fail2ban
+sudo apt install -y unattended-upgrades
 
 IPADDRESS=`dig -4 @resolver1.opendns.com -t a myip.opendns.com +short`
 IFS='.' read -r -a array1 <<< ${HOSTNAME}; SHORTNAME=${array1[0]};
@@ -90,7 +91,6 @@ sudo mv -f sshd_config /etc/ssh/sshd_config
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow 22123
-sudo ufw allow 80
 sudo ufw allow 943
 sudo ufw allow 1194
 sudo ufw allow 443
@@ -100,7 +100,7 @@ sudo ufw enable
 sudo service ufw restart
 sudo service ssh restart
 
-wget "http://swupdate.openvpn.org/as/openvpn-as-2.1.12-Ubuntu16.amd_64.deb"
+wget "http://swupdate.openvpn.org/as/openvpn-as-2.1.12-Ubuntu18.amd_64.deb"
 sudo dpkg -i openvpn*
 sudo passwd openvpn
 sudo bash /usr/local/openvpn_as/bin/ovpn-init
