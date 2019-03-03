@@ -23,3 +23,7 @@ OR
 OR
 
 `cd;rm openvpn.sh;wget 'https://raw.githubusercontent.com/robkerry/server-setup/master/openvpn.sh';chmod +x openvpn.sh;./openvpn.sh;rm openvpn.sh;`
+
+OR
+
+`cd;rm mysql.sh;wget 'https://raw.githubusercontent.com/robkerry/server-setup/master/mysql.sh';chmod +x mysql.sh;./mysql.sh;rm mysql.sh;`
