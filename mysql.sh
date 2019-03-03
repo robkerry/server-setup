@@ -109,7 +109,7 @@ sudo echo -e "net.core.somaxconn=100000\nnet.ipv4.ip_local_port_range=10000 6553
 wget "https://repo.percona.com/apt/percona-release_latest.generic_all.deb"
 sudo dpkg -i percona-release_latest.generic_all.deb
 sudo apt update
-sudo apt install percona-xtradb-cluster-57
+sudo apt install -y percona-xtradb-cluster-57
 
 sudo service mysql stop
 
