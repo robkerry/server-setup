@@ -8,7 +8,6 @@
 #########   CHANGE THESE SETTINGS   #########
 
 TIMEZONE="Europe/London"
-DATADRIVE="/dev/sdb"
 
 ###############   ALL DONE!   ###############
 
@@ -50,16 +49,6 @@ sudo apt-get install -y ufw
 sudo apt-get install -y fail2ban
 
 sudo apt-get -y auto-remove
-
-### Mount & Format Data Drive ###
-
-sudo umount "$DATADRIVE"
-printf "o\nn\np\n1\n\n\nw\n" | sudo fdisk "$DATADRIVE"
-sudo mkfs.ext4 "${DATADRIVE}1"
-sudo tune2fs -m 0.5 "$DATADRIVE"
-sudo mkdir /data
-sudo echo -e "${DATADRIVE}\t/data\text4\tdefaults,noatime\t0\t0\n" >> /etc/fstab
-sudo mount -a
 
 IPADDRESS=`dig -4 @resolver1.opendns.com -t a myip.opendns.com +short`
 IFS='.' read -r -a array1 <<< ${HOSTNAME}; SHORTNAME=${array1[0]};
@@ -103,7 +92,7 @@ sudo add-apt-repository -y ppa:webupd8team/java
 sudo apt-get -y install oracle-java8-installer
 wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
 sudo apt-get install apt-transport-https
-echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-6.x.list
+echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
 sudo apt-get -y update
 sudo apt-get -y install elasticsearch
 sudo /bin/systemctl daemon-reload
@@ -115,8 +104,6 @@ sudo systemctl start elasticsearch.service
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow 22123/tcp
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
 sudo ufw allow from ${CLIENTIP}
 sudo ufw enable
 
