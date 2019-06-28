@@ -13,6 +13,10 @@ OR
 
 OR
 
+`cd;rm elastic.sh;wget 'https://raw.githubusercontent.com/robkerry/server-setup/master/elastic.sh';chmod +x elastic.sh;./elastic.sh;rm elastic.sh;`
+
+OR
+
 
 `cd;rm haproxy.sh;wget 'https://raw.githubusercontent.com/robkerry/server-setup/master/haproxy.sh';chmod +x haproxy.sh;./haproxy.sh;rm haproxy.sh;`
 
