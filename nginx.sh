@@ -28,28 +28,13 @@ echo "Starting setup script..."
 ### Run Software Updates First ###
 sudo apt install -y ca-certificates
 sudo add-apt-repository -y ppa:nginx/development
-sudo add-apt-repository -y ppa:ondrej/php
+#sudo add-apt-repository -y ppa:ondrej/php
 sudo apt -y update
 sudo apt -y upgrade
 
 ### Install Required Software ###
-sudo apt install -y build-essential
-sudo apt install -y dnsutils
-sudo apt install -y software-properties-common
-sudo apt install -y nscd
-sudo apt install -y nano
-sudo apt install -y git
-sudo apt install -y python-pip
-sudo apt install -y gcc
-sudo apt install -y autoconf
-sudo apt install -y curl
-sudo apt install -y libtool
-sudo apt install -y python-dev
-sudo apt install -y make
-sudo apt install -y g++
-sudo apt install -y ufw
-sudo apt install -y fail2ban
-sudo apt install -y wget zip unzip python2.7 unattended-upgrades htop libhiredis-dev
+sudo apt install -y unattended-upgrades htop build-essential dnsutils software-properties-common nscd nano git python2.7 python-pip python3 gcc autoconf curl libtool python-dev make g++ ufw fail2ban wget zip unzip ntp
+sudo apt install -y redis-server nginx php7.2-fpm php7.2-cli php7.2-sqlite3 php7.2-mysql php7.2-gd php7.2-curl php7.2-memcached php7.2-imap php7.2-mbstring php7.2-xml php7.2-zip php7.2-bcmath php7.2-soap php-redis php7.2-intl php7.2-readline php7.2-dev
 
 sudo apt autoremove
 
@@ -64,18 +49,9 @@ hostname $HOSTNAME
 sudo echo ${HOSTNAME} > /etc/hostname
 sudo echo -e "127.0.0.1\tlocalhost ${HOSTNAME} ${SHORTNAME}\n${IPADDRESS}\t${HOSTNAME} ${SHORTNAME}\n\n" > /etc/hosts
 
-### Add Google DNS Resolvers ###
-sudo rm -Rf /etc/resolvconf/resolv.conf.d/*
-sudo touch /etc/resolvconf/resolv.conf.d/base
-sudo touch /etc/resolvconf/resolv.conf.d/head
-sudo touch /etc/resolvconf/resolv.conf.d/original
-sudo echo -e "nameserver 127.0.0.1\nnameserver 8.8.8.8\nnameserver 8.8.4.4\noptions timeout 1\n" > /etc/resolvconf/resolv.conf.d/tail
-resolvconf -u
-
 ### Configure Time Server & Timezone ###
 sudo rm -Rf /etc/localtime;ln -fs /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 sudo rm -Rf /etc/timezone;ln -fs /usr/share/zoneinfo/${TIMEZONE} /etc/timezone
-sudo apt install -y ntp
 sudo service ntp stop
 sudo ntpd -gq
 sudo service ntp start
@@ -92,30 +68,18 @@ sudo mv -f sshd_config /etc/ssh/sshd_config
 
 ### Configure NGINX ###
 
-sudo apt install -y nginx php7.2-fpm php7.2-cli php7.2-sqlite3 php7.2-mysql php7.2-gd php7.2-curl php7.2-memcached php7.2-imap php7.2-mbstring php7.2-xml php7.2-zip php7.2-bcmath php7.2-soap php7.2-intl php7.2-readline php7.2-dev
-
 curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
-
-git clone https://github.com/nrk/phpiredis.git && cd phpiredis && phpize && ./configure --enable-phpiredis && make && make install && cd ../
-
-sudo fallocate -l 1G /swapfile
-sudo chmod 600 /swapfile
-sudo mkswap /swapfile
-sudo swapon /swapfile
-sudo echo "/swapfile none swap sw 0 0" | sudo tee -a /etc/fstab
-sudo echo "vm.swappiness=30" | sudo tee -a /etc/sysctl.conf
-sudo echo "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
 
 sudo sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.2/cli/php.ini
 sudo sed -i "s/display_errors = .*/display_errors = Off/" /etc/php/7.2/cli/php.ini
-sudo sed -i "s/memory_limit = .*/memory_limit = 512M/" /etc/php/7.2/cli/php.ini
+sudo sed -i "s/memory_limit = .*/memory_limit = 2048M/" /etc/php/7.2/cli/php.ini
 sudo sed -i "s/;date.timezone.*/date.timezone = Europe\/London/" /etc/php/7.2/cli/php.ini
 sudo sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php/7.2/fpm/php.ini
-sudo sed -i "s/memory_limit = .*/memory_limit = 512M/" /etc/php/7.2/fpm/php.ini
+sudo sed -i "s/memory_limit = .*/memory_limit = 2048M/" /etc/php/7.2/fpm/php.ini
 sudo sed -i "s/;date.timezone.*/date.timezone = Europe\/London/" /etc/php/7.2/fpm/php.ini
 
 sudo sed -i "s/;opcache.enable=.*/opcache.enable=1/" /etc/php/7.2/fpm/php.ini
-sudo sed -i "s/;opcache.memory_consumption=.*/opcache.memory_consumption=192/" /etc/php/7.2/fpm/php.ini
+sudo sed -i "s/;opcache.memory_consumption=.*/opcache.memory_consumption=512/" /etc/php/7.2/fpm/php.ini
 sudo sed -i "s/;opcache.interned_strings_buffer=.*/opcache.interned_strings_buffer=16/" /etc/php/7.2/fpm/php.ini
 sudo sed -i "s/;opcache.max_accelerated_files=.*/opcache.max_accelerated_files=10000/" /etc/php/7.2/fpm/php.ini
 sudo sed -i "s/;opcache.revalidate_freq=.*/opcache.revalidate_freq=0/" /etc/php/7.2/fpm/php.ini
@@ -144,7 +108,7 @@ sudo sed -i "s/pm.max_children = .*/pm.max_children = 10/" /etc/php/7.2/fpm/pool
 sudo sed -i "s/pm.start_servers = .*/pm.start_servers = 4/" /etc/php/7.2/fpm/pool.d/www.conf
 sudo sed -i "s/pm.min_spare_servers = .*/pm.min_spare_servers = 4/" /etc/php/7.2/fpm/pool.d/www.conf
 sudo sed -i "s/pm.max_spare_servers = .*/pm.max_spare_servers = 6/" /etc/php/7.2/fpm/pool.d/www.conf
-sudo sed -i "s/;pm.max_requests = .*/pm.max_requests = 1000/" /etc/php/7.2/fpm/pool.d/www.conf
+sudo sed -i "s/;pm.max_requests = .*/pm.max_requests = 10000/" /etc/php/7.2/fpm/pool.d/www.conf
 
 sudo sysctl -w net.core.somaxconn=100000
 sudo sysctl -w net.ipv4.ip_local_port_range="10000 65535"
