@@ -7,7 +7,7 @@
 
 #########   CHANGE THESE SETTINGS   #########
 
-TIMEZONE="Europe/London"
+TIMEZONE="UTC"
 
 ###############   ALL DONE!   ###############
 
@@ -62,11 +62,7 @@ sudo echo ${HOSTNAME} > /etc/hostname
 sudo echo -e "127.0.0.1\tlocalhost ${HOSTNAME} ${SHORTNAME}\n${IPADDRESS}\t${HOSTNAME} ${SHORTNAME}\n\n" > /etc/hosts
 
 ### Add Google DNS Resolvers ###
-sudo rm -Rf /etc/resolvconf/resolv.conf.d/*
-sudo touch /etc/resolvconf/resolv.conf.d/base
-sudo touch /etc/resolvconf/resolv.conf.d/head
-sudo touch /etc/resolvconf/resolv.conf.d/original
-sudo echo -e "nameserver 127.0.0.1\nnameserver 8.8.8.8\nnameserver 8.8.4.4\noptions timeout 1\n" > /etc/resolvconf/resolv.conf.d/tail
+sudo echo -e "nameserver 127.0.0.1\nnameserver 8.8.8.8\nnameserver 8.8.4.4\noptions timeout 1\n" > /etc/resolv.conf
 resolvconf -u
 
 ### Configure Time Server & Timezone ###
