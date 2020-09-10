@@ -7,7 +7,7 @@
 
 #########   CHANGE THESE SETTINGS   #########
 
-TIMEZONE="Europe/London"
+TIMEZONE="UTC"
 
 ###############   ALL DONE!   ###############
 
@@ -90,8 +90,6 @@ sudo mv -f sshd_config /etc/ssh/sshd_config
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow 22123/tcp
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
 sudo ufw allow from ${CLIENTIP}
 sudo ufw enable
 
